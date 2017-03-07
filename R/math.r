@@ -17,20 +17,20 @@ loglikelihood0 <- function(data
     stop("params must all be greater than 0")
   }
   if (any(x < 0) | any(x - floor(x) > 0)){
-    stop( "x, n, and m must all be nonnegative integers")
+    stop("x, n, and m must all be nonnegative integers")
   }
   if (x > m | m > n | x > n){
-    stop( "x, n, and m must satisfy x <= m <= n")
+    stop("x, n, and m must satisfy x <= m <= n")
   }
-  out <- beta(Alpha_param + x, Beta_param + n -x) *
+  out <- beta(Alpha_param + x, Beta_param + n - x) *
           beta(Gamma_param, Delta_param + n) / (
           beta(Alpha_param, Beta_param) * beta(Gamma_param, Delta_param) )
   if (x < n){
-    for (i in 0:(n-m-1)){
+    for (i in 0:(n - m - 1)){
       out <- out +
          beta(Gamma_param + 1, Delta_param + m + i) *
          beta(Alpha_param + x, Beta_param + m - x + i) / (
-            beta(Alpha_param, Beta_param) * beta(Gamma_param, Delta_param) 
+            beta(Alpha_param, Beta_param) * beta(Gamma_param, Delta_param)
          )
     }
   }
@@ -63,7 +63,7 @@ loglikelihood_d0 <- function(data
                  loglikelihood0(params = x
                                 , data = data)
                  }
-                 , x = params                          
+                 , x = params
                  )
 }
 
@@ -87,10 +87,10 @@ loglikelihood_d <- function(data
 #' @param lambda The regularization factor
 regularization <- function(params
                                 , lambda = 0){
-  lambda*
+  lambda *
     sum(
       sapply(params
-             , FUN = function(x) (log(x))^2)
+             , FUN = function(x) (log(x)) ^ 2)
     )
 }
 
@@ -101,7 +101,7 @@ regularization <- function(params
 #' @param lambda The regularization factor
 regularization_d <- function(params
                                   , lambda = 0){
-  lambda * (    
+  lambda * (
     sum(
       sapply(params
              , FUN = function(x) 2 * log(x) / x)

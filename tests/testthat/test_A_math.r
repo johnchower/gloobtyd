@@ -1,18 +1,18 @@
 library(numDeriv)
 
 test_that("Log likelihood function catches errors.", {
-  test_n = 20
-  test_m = 10
-  test_x = 5
-  testdata = c(test_x, test_n, test_m)
-  testparams = c(0, -1 , 1 ,.5)
+  test_n <- 20
+  test_m <- 10
+  test_x <- 5
+  testdata <- c(test_x, test_n, test_m)
+  testparams <- c(0, -1, 1, .5)
   expect_error(object = loglikelihood0(testdata, testparams)
-               , regexp ="params must all be greater than 0")
-  testparams = rep(.5, times = 4)
-  testdata = c(.5, 10, 4)
+               , regexp = "params must all be greater than 0")
+  testparams <- rep(.5, times = 4)
+  testdata <- c(.5, 10, 4)
   expect_error(object = loglikelihood0(testdata, testparams)
                , regexp = "x, n, and m must all be nonnegative integers")
-  testdata = c(5, 10 ,15)
+  testdata <- c(5,  10, 15)
   expect_error(object = loglikelihood0(testdata, testparams)
                , regexp = "x, n, and m must satisfy x <= m <= n")
 })
@@ -20,12 +20,12 @@ test_that("Log likelihood function catches errors.", {
 test_that("Derivative of log-likelihood function was computed properly", {
   error <- 0
   num_iterations <- 100
-  for(j in 1:num_iterations){
-    test_n = rpois(n = 1, lambda = 20)
-    test_m = sample(x = 1:test_n, size = 1)
-    test_x = sample(x = 1:test_m, size = 1)
-    testdata = c(test_x, test_n, test_m)
-    testparams = c(abs(rnorm(1))
+  for (j in 1:num_iterations){
+    test_n <- rpois(n <- 1, lambda = 20)
+    test_m <- sample(x = 1:test_n, size = 1)
+    test_x <- sample(x = 1:test_m, size = 1)
+    testdata <- c(test_x, test_n, test_m)
+    testparams <- c(abs(rnorm(1))
                   , abs(rnorm(1))
                   , abs(rnorm(1))
                   , abs(rnorm(1))
@@ -41,11 +41,11 @@ test_that("Derivative of log-likelihood function was computed properly", {
                              loglikelihood0(params = x
                                            , data = testdata)
                            }
-                           , x = testparams                          
+                           , x = testparams
                            )
     actual_deriv <- loglikelihood_d0(params = testparams
                                     , data = testdata)
-    iter_error <- sum((actual_deriv - expected_deriv)^2)
+    iter_error <- sum( (actual_deriv - expected_deriv) ^ 2)
     error <- error + iter_error
   }
   expect_equal(object = error
@@ -53,7 +53,7 @@ test_that("Derivative of log-likelihood function was computed properly", {
 })
 
 test_that("Regularization function has correct properties", {
-  testparams = rep(1, times = 4)
+  testparams <- rep(1, times = 4)
   testthat::expect_equal(regularization(testparams)
                          , 0)
   actual_deriv <- numDeriv::grad(func = function(x){
@@ -75,8 +75,8 @@ test_that("Regularization function has correct properties", {
 test_that("Derivative of regularization function was computed properly", {
   error <- 0
   num_iterations <- 100
-  for(i in 1:num_iterations){
-    testparams = c(abs(rnorm(1))
+  for (i in 1:num_iterations){
+    testparams <- c(abs(rnorm(1))
                   , abs(rnorm(1))
                   , abs(rnorm(1))
                   , abs(rnorm(1))
@@ -93,7 +93,7 @@ test_that("Derivative of regularization function was computed properly", {
                                    , testparams[4])
                           )
     actual_deriv <- regularization_d(testparams)
-    iter_error <- sum((actual_deriv - expected_deriv)^2)
+    iter_error <- sum( (actual_deriv - expected_deriv) ^ 2)
     error <- error + iter_error
   }
   expect_equal(object = error
