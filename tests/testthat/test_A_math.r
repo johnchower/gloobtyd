@@ -30,13 +30,6 @@ test_that("Derivative of log-likelihood function was computed properly", {
                   , abs(rnorm(1))
                   , abs(rnorm(1))
                   )
-#   print(paste0("x = ", test_x
-#                , " m = ", test_m
-#                , " n = ", test_n))
-#   print(paste0("alpha = ", testparams[1]
-#                , " beta = ", testparams[2]
-#                , " gamma = ", testparams[3]
-#                , " delta = ", testparams[4]))
     expected_deriv <- numDeriv::grad(func = function(x){
                              loglikelihood0(params = x
                                            , data = testdata)
