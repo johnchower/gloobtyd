@@ -4,14 +4,14 @@
 \alias{loglikelihood}
 \title{Log-Likelihood function for BG/BB model}
 \usage{
-loglikelihood(data, params)
+loglikelihood(params, data)
 }
 \arguments{
-\item{data}{An integer matrix where each row consists of the
-recency/frequency statistics for a single user, in the order (x, n, m)}
-
 \item{params}{A numeric vector of parameters for the log likelihood
 function. (alpha, beta, gamma, delta)}
+
+\item{data}{An integer matrix where each row consists of the
+recency/frequency statistics for a single user, in the order (x, n, m)}
 }
 \description{
 Log-Likelihood function for BG/BB model

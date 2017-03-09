@@ -4,14 +4,14 @@
 \alias{loglikelihood0}
 \title{Log-Likelihood function for BG/BB model (single user)}
 \usage{
-loglikelihood0(data, params)
+loglikelihood0(params, data)
 }
 \arguments{
-\item{data}{An integer vector consisting of the recency/frequency statistics
-for a single user, in the order (x, n, m)}
-
 \item{params}{A numeric vector of parameters for the log likelihood
 function. (alpha, beta, gamma, delta)}
+
+\item{data}{An integer vector consisting of the recency/frequency statistics
+for a single user, in the order (x, n, m)}
 }
 \description{
 Log-Likelihood function for BG/BB model (single user)

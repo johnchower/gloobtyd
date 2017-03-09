@@ -4,14 +4,14 @@
 \alias{loglikelihood_d0}
 \title{Derivative of log-Likelihood function for BG/BB model (single user)}
 \usage{
-loglikelihood_d0(data, params)
+loglikelihood_d0(params, data)
 }
 \arguments{
-\item{data}{An integer vector consisting of the recency/frequency statistics
-for a single user, in the order (x, n, m)}
-
 \item{params}{A numeric vector of parameters for the log likelihood
 function. (alpha, beta, gamma, delta)}
+
+\item{data}{An integer vector consisting of the recency/frequency statistics
+for a single user, in the order (x, n, m)}
 }
 \description{
 Derivative of log-Likelihood function for BG/BB model (single user)

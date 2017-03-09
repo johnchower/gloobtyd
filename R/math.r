@@ -4,8 +4,7 @@
 #' for a single user, in the order (x, n, m)
 #' @param params A numeric vector of parameters for the log likelihood
 #' function. (alpha, beta, gamma, delta)
-loglikelihood0 <- function(data
-                               , params){
+loglikelihood0 <- function(params, data){
   Alpha_param <- params[1]
   Beta_param <- params[2]
   Gamma_param <- params[3]
@@ -43,10 +42,9 @@ loglikelihood0 <- function(data
 #' recency/frequency statistics for a single user, in the order (x, n, m)
 #' @param params A numeric vector of parameters for the log likelihood
 #' function. (alpha, beta, gamma, delta)
-loglikelihood <- function(data
-                               , params){
+loglikelihood <- function(params, data){
   sum(
-    apply(data, 1, function(row) loglikelihood(row, params))
+    apply(data, 1, function(row) loglikelihood0(data = row, params = params))
   )
 }
 
@@ -57,8 +55,7 @@ loglikelihood <- function(data
 #' @param params A numeric vector of parameters for the log likelihood
 #' function. (alpha, beta, gamma, delta)
 #' @importFrom numDeriv grad
-loglikelihood_d0 <- function(data
-                               , params){
+loglikelihood_d0 <- function(params, data){
   numDeriv::grad(func = function(x){
                  loglikelihood0(params = x
                                 , data = data)
@@ -74,8 +71,7 @@ loglikelihood_d0 <- function(data
 #' recency/frequency statistics for a single user, in the order (x, n, m)
 #' @param params A numeric vector of parameters for the log likelihood
 #' function. (alpha, beta, gamma, delta)
-loglikelihood_d <- function(data
-                               , params){
+loglikelihood_d <- function(params, data){
   sum(
     apply(data, 1, function(row) loglikelihood_d0(row, params))
   )
@@ -108,4 +104,15 @@ regularization_d <- function(params
              , FUN = function(x) 2 * log(x) / x)
     )
   )
+}
+
+#' Cost function for BG/BB model
+#'
+#' @param data An integer matrix where each row consists of the
+#' recency/frequency statistics for a single user, in the order (x, n, m)
+#' @param params A numeric vector of parameters for the log likelihood
+#' function. (alpha, beta, gamma, delta)
+#' @param lambda The regularization factor
+cost <- function(params, data, lambda = 0){
+  regularization(params, lambda) - loglikelihood(params, data)
 }

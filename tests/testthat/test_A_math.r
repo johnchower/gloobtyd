@@ -6,14 +6,14 @@ test_that("Log likelihood function catches errors.", {
   test_x <- 5
   testdata <- c(test_x, test_n, test_m)
   testparams <- c(0, -1, 1, .5)
-  expect_error(object = loglikelihood0(testdata, testparams)
+  expect_error(object = loglikelihood0(data = testdata, params = testparams)
                , regexp = "params must all be greater than 0")
   testparams <- rep(.5, times = 4)
   testdata <- c(.5, 10, 4)
-  expect_error(object = loglikelihood0(testdata, testparams)
+  expect_error(object = loglikelihood0(data = testdata, params = testparams)
                , regexp = "x, n, and m must all be nonnegative integers")
   testdata <- c(5,  10, 15)
-  expect_error(object = loglikelihood0(testdata, testparams)
+  expect_error(object = loglikelihood0(data = testdata, params = testparams)
                , regexp = "x, n, and m must satisfy x <= m <= n")
 })
 
