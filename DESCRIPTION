@@ -11,4 +11,5 @@ Suggests: testthat
 RoxygenNote: 6.0.1
 Imports: numDeriv,
     magrittr,
-    RPostgreSQL
+    RPostgreSQL,
+    dplyr

@@ -4,7 +4,8 @@
 \alias{fetchSessDurData}
 \title{Fetch session duration data for a given group of users}
 \usage{
-fetchSessDurData(userGroup, runDate, con = redshift_connection$con)
+fetchSessDurData(userGroup = NULL, runDate = as.numeric(gsub(pattern = "-",
+  replacement = "", x = Sys.Date())), con = redshift_connection$con)
 }
 \arguments{
 \item{userGroup}{A numeric vector of user_ids. Only user_ids belonging to this
@@ -14,6 +15,9 @@ set will be included in the analysis.}
 date will be dropped.}
 
 \item{con}{A database connection object to fetch the results from.}
+}
+\value{
+data.frame of the form (user_id, active_week_start_date)
 }
 \description{
 Fetch session duration data for a given group of users

@@ -4,11 +4,14 @@
 \alias{calculateRecencyFrequency}
 \title{Calculate recency and frequency statistics from session duration data}
 \usage{
-calculateRecencyFrequency(sessDurData)
+calculateRecencyFrequency(sessDurData, runDate = Sys.Date())
 }
 \arguments{
 \item{sessDurData}{A data.frame of the form (user_id,
 active_week_start_date) that gives the weeks in which each user was active.}
+
+\item{runDate}{A numeric date id in the form yyyymmdd. All data after this
+date will be dropped.}
 }
 \value{
 A data.frame of the form (user_id, x, n, m). Here, x represents the

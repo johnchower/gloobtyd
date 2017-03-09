@@ -72,6 +72,13 @@ fetchSessDurData <- function(userGroup = NULL
 #' repeat transaction opportunities that the user had, and m represents the
 #' index of the most recent transaction. (M is also called t_x in the
 #' literature.)
+#' @importFrom magrittr %>%
+#' @importFrom dplyr left_join
+#' @importFrom dplyr arrange
+#' @importFrom dplyr group_by
+#' @importFrom dplyr mutate
+#' @importFrom dplyr filter
+#' @importFrom dplyr summarise
 calculateRecencyFrequency <- function(sessDurData
                                      , runDate = Sys.Date()){
   runDate0 <- runDate

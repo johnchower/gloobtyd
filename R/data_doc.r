@@ -23,3 +23,9 @@
 #' 
 #' @format numeric
 "user_id_sample_small"
+
+#' A data.frame containing the recency/frequency statistics for
+#' user_id_sample_mini
+#' 
+#' @format numeric
+"recency_frequency_mini_test"
