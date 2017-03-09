@@ -1,3 +1,14 @@
+#' A string containing the session duration data query.
+#' 
+#' @format A length-one character vector.
+"query_session_duration_data"
+
+#' A string containing the session duration data query, with placeholders to
+#' substitue userGroup and runDate queries.
+#' 
+#' @format A length-one character vector.
+"query_session_duration_data_sub"
+
 #' A string containing the user ids query.
 #' 
 #' @format A length-one character vector.
