@@ -4,3 +4,4 @@
 inst/scratch_work/*
 **\.sw*
 Session.vim
+inst/exdata/sess_dur_data_full.csv
