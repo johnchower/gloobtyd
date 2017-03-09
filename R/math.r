@@ -25,7 +25,7 @@ loglikelihood0 <- function(data
   out <- beta(Alpha_param + x, Beta_param + n - x) *
           beta(Gamma_param, Delta_param + n) / (
           beta(Alpha_param, Beta_param) * beta(Gamma_param, Delta_param) )
-  if (x < n){
+  if (m < n){
     for (i in 0:(n - m - 1)){
       out <- out +
          beta(Gamma_param + 1, Delta_param + m + i) *
@@ -64,6 +64,7 @@ loglikelihood_d0 <- function(data
                                 , data = data)
                  }
                  , x = params
+                 , side = c(1,1,1,1)
                  )
 }
 

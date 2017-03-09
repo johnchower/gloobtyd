@@ -23,7 +23,7 @@ test_that("Derivative of log-likelihood function was computed properly", {
   for (j in 1:num_iterations){
     test_n <- rpois(n <- 1, lambda = 20)
     test_m <- sample(x = 1:test_n, size = 1)
-    test_x <- sample(x = 1:test_m, size = 1)
+    test_x <- sample(x = 0:(test_m - 1), size = 1)
     testdata <- c(test_x, test_n, test_m)
     testparams <- c(abs(rnorm(1))
                   , abs(rnorm(1))
