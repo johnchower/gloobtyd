@@ -4,15 +4,21 @@
 #' set will be included in the analysis. 
 #' @param runDate A numeric date id in the form yyyymmdd. All data after this
 #' date will be dropped.
+#' @param csvLoc A string containing the location of a csv file containing
+#' session duration data. If left NULL, data will be fetched from Redshift.
 #' @param con A database connection object to fetch the results from.
 #' @return data.frame of the form (user_id, active_week_start_date)
 #' @importFrom magrittr %>%
 #' @importFrom RPostgreSQL dbGetQuery
+#' @importFrom dplyr mutate
+#' @importFrom dplyr filter
 fetchSessDurData <- function(userGroup = NULL
                              , runDate = as.numeric(
                                           gsub(pattern = "-"
                                                , replacement = ""
-                                               , x = Sys.Date()))
+                                               , x = Sys.Date())
+                                          )
+                             , csvLoc = NULL
                              , con = redshift_connection$con){
   runYear <- substr(runDate, 1, 4)
   runMonth <- substr(runDate, 5, 6)
@@ -21,44 +27,56 @@ fetchSessDurData <- function(userGroup = NULL
   weekBefore <- seq.Date(from = runDate0 - 6
                           , to =  runDate0
                           , by = 1)
-  runDate <- weekBefore[which(weekdays(weekBefore) == "Monday")] %>%
-    as.character %>% {
-    gsub(pattern = "-"
-         , replacement = ""
-         , x = .)
+  runDate0 <- weekBefore[which(weekdays(weekBefore) == "Monday")] 
+  runDate <- runDate0 %>%
+      as.character %>% {
+      gsub(pattern = "-"
+           , replacement = ""
+           , x = .)
+      }
+  if (is.null(csvLoc)){
+    if (length(userGroup) == 1){
+      stop("'userGroup' must be either NULL or a group of at least 2 users")
+    } else if (is.null(userGroup)){
+      userGroupQuery <-
+        paste0("SELECT DISTINCT ud.id "
+               , "FROM user_dimensions ud "
+               , "LEFT JOIN user_platform_action_facts upaf "
+               , "on upaf.user_id=ud.id "
+               , "WHERE ud.email IS NOT NULL "
+               , "AND upaf.platform_action=\'Account Created\' ")
+    } else {
+      usersChar <- paste(userGroup, collapse = ",")
+      userGroupQuery <-
+        paste0(
+          "SELECT DISTINCT id FROM user_dimensions WHERE id IN ("
+          , usersChar
+          , ")"
+        )
     }
-  if (length(userGroup) == 1){
-    stop("'userGroup' must be either NULL or a group of at least 2 users")
-  } else if (is.null(userGroup)){
-    userGroupQuery <-
-      paste0("SELECT DISTINCT ud.id "
-             , "FROM user_dimensions ud "
-             , "LEFT JOIN user_platform_action_facts upaf "
-             , "on upaf.user_id=ud.id "
-             , "WHERE ud.email IS NOT NULL "
-             , "AND upaf.platform_action=\'Account Created\' ")
+    runDateQuery <- paste0("SELECT id as date_id FROM date_dim where id="
+                           , runDate)
+    fetchQuery <- query_session_duration_data_sub %>% {
+      gsub(pattern = "xyz_userGroupQuery_xyz"
+           , replacement = userGroupQuery
+           , x = .)
+    } %>% {
+      gsub(pattern = "xyz_runDateQuery_xyz"
+           , replacement = runDateQuery
+           , x = .)
+    }
+    out <- RPostgreSQL::dbGetQuery(conn = con
+                            , statement = fetchQuery)
   } else {
-    usersChar <- paste(userGroup, collapse = ",")
-    userGroupQuery <-
-      paste0(
-        "SELECT DISTINCT id FROM user_dimensions WHERE id IN ("
-        , usersChar
-        , ")"
-      )
+    out <- csvLoc %>%
+      read.csv(stringsAsFactors = F) %>%
+      mutate(active_week_start_date = as.Date(active_week_start_date)) %>%
+      filter(active_week_start_date < runDate0)
+    if (!is.null(userGroup)){
+      out <- dplyr::filter(out, user_id %in% userGroup) 
+    } 
   }
-  runDateQuery <- paste0("SELECT id as date_id FROM date_dim where id="
-                         , runDate)
-  fetchQuery <- query_session_duration_data_sub %>% {
-    gsub(pattern = "xyz_userGroupQuery_xyz"
-         , replacement = userGroupQuery
-         , x = .)
-  } %>% {
-    gsub(pattern = "xyz_runDateQuery_xyz"
-         , replacement = runDateQuery
-         , x = .)
-  }
-  RPostgreSQL::dbGetQuery(conn = con
-                          , statement = fetchQuery)
+  return(out)
 }
 
 #' Calculate recency and frequency statistics from session duration data

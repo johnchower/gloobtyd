@@ -1,11 +1,17 @@
-glootility::connect_to_redshift()
 library(dplyr)
+csv_loc <- "~/Projects/gloobtyd/inst/exdata/sess_dur_data_full.csv"
+if (is.null(csv_loc)){
+  glootility::connect_to_redshift()
+}
 
 user_group_test <- user_id_sample_mini
 run_date_test <- 20170308
 effective_run_date_test <- as.Date("2017-03-06")
-sess_dur_data_mini <- fetchSessDurData(userGroup = user_group_test
-                                      , runDate = run_date_test)
+sess_dur_data_mini <-
+  fetchSessDurData(
+    userGroup = user_group_test
+    , runDate = run_date_test
+    , csvLoc = csv_loc)
 
 test_that("fetchSessDurData returns correct results.", {
   object_to_test  <- sess_dur_data_mini
@@ -46,7 +52,7 @@ test_that("calculateRecencyFrequency returns correct results.", {
 
 test_that("calculateRecencyFrequency never violates constraint x <= m <= n.", {
   object_to_test <- calculateRecencyFrequency(
-      sessDurData = fetchSessDurData()
+      sessDurData = fetchSessDurData(csvLoc = csv_loc)
       , runDate = effective_run_date_test
   ) %>%
   slice(sample(1:nrow(.), size = 1000))
@@ -66,4 +72,6 @@ test_that("calculateRecencyFrequency never violates constraint x <= m <= n.", {
                , expected = 0)
 })
 
-RPostgreSQL::dbDisconnect(conn = redshift_connection$con)
+if (is.null(csv_loc)){
+  RPostgreSQL::dbDisconnect(conn = redshift_connection$con)
+}

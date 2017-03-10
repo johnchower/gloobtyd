@@ -5,7 +5,8 @@
 \title{Fetch session duration data for a given group of users}
 \usage{
 fetchSessDurData(userGroup = NULL, runDate = as.numeric(gsub(pattern = "-",
-  replacement = "", x = Sys.Date())), con = redshift_connection$con)
+  replacement = "", x = Sys.Date())), csvLoc = NULL,
+  con = redshift_connection$con)
 }
 \arguments{
 \item{userGroup}{A numeric vector of user_ids. Only user_ids belonging to this
@@ -13,6 +14,9 @@ set will be included in the analysis.}
 
 \item{runDate}{A numeric date id in the form yyyymmdd. All data after this
 date will be dropped.}
+
+\item{csvLoc}{A string containing the location of a csv file containing
+session duration data. If left NULL, data will be fetched from Redshift.}
 
 \item{con}{A database connection object to fetch the results from.}
 }
