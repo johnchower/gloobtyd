@@ -7,10 +7,10 @@
 #' @param ... Additional arguments to pass to stats::optim
 #' @importFrom stats optim
 trainModel <- function(data
-                       , paramsInit = c(1,1,1,1)
+                       ,  paramsInit = c(1, 1, 1, 1)
                        , ...){
   optim(par = paramsInit
         , fn = cost
         , data = data
-        , ...) 
+        , ...)
 }
