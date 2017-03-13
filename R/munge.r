@@ -12,6 +12,7 @@
 #' @importFrom RPostgreSQL dbGetQuery
 #' @importFrom dplyr mutate
 #' @importFrom dplyr filter
+#' @importFrom utils read.csv
 fetchSessDurData <- function(userGroup = NULL
                              , runDate = as.numeric(
                                           gsub(pattern = "-"
@@ -97,6 +98,7 @@ fetchSessDurData <- function(userGroup = NULL
 #' @importFrom dplyr mutate
 #' @importFrom dplyr filter
 #' @importFrom dplyr summarise
+#' @importFrom dplyr inner_join
 calculateRecencyFrequency <- function(sessDurData
                                      , runDate = Sys.Date()){
   runDate0 <- runDate
@@ -111,7 +113,7 @@ calculateRecencyFrequency <- function(sessDurData
   dateSeq <- data.frame(active_week_start_date = dateSeq
                         , seq_number = (length(dateSeq) - 1):0)
   recency_frequency_mini_test <- sessDurData %>%
-    left_join(dateSeq, by = "active_week_start_date") %>%
+    inner_join(dateSeq, by = "active_week_start_date") %>%
     arrange(user_id, active_week_start_date) %>%
     group_by(user_id) %>%
     mutate(reverse_seq_number = max(seq_number) - seq_number) %>%

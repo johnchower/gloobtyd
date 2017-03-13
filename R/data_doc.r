@@ -27,5 +27,11 @@
 #' A data.frame containing the recency/frequency statistics for
 #' user_id_sample_mini
 #' 
-#' @format numeric
+#' @format data.frame
 "recency_frequency_mini_test"
+
+#' A data frame containing the session duration data that produces the NA error
+#' caused by calculateRecencyFrequencyData, with rundate = "2016-10-05".
+#'
+#' @format data.frame
+"test_data_cRF_NA"

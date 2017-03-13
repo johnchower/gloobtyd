@@ -72,6 +72,20 @@ test_that("calculateRecencyFrequency never violates constraint x <= m <= n.", {
                , expected = 0)
 })
 
+test_that("calculateRecencyFrequency returns no NA or NULL values.", {
+  w <- as.Date("2015-10-05")
+  object_to_test <- calculateRecencyFrequency(sessDurData = test_data_cRF_NA
+                                              , runDate = w)
+  x_na <- sum(is.na(object_to_test$x))
+  n_na <- sum(is.na(object_to_test$n))
+  m_na <- sum(is.na(object_to_test$m))
+  expect_equal(object = x_na
+               , expected = 0)
+  expect_equal(object = n_na
+               , expected = 0)
+  expect_equal(object = m_na
+               , expected = 0)
+})
 if (is.null(csv_loc)){
   RPostgreSQL::dbDisconnect(conn = redshift_connection$con)
 }

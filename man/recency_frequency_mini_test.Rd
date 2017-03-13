@@ -5,7 +5,7 @@
 \alias{recency_frequency_mini_test}
 \title{A data.frame containing the recency/frequency statistics for
 user_id_sample_mini}
-\format{numeric}
+\format{data.frame}
 \usage{
 recency_frequency_mini_test
 }
