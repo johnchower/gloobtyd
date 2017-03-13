@@ -86,6 +86,7 @@ test_that("calculateRecencyFrequency returns no NA or NULL values.", {
   expect_equal(object = m_na
                , expected = 0)
 })
+
 if (is.null(csv_loc)){
   RPostgreSQL::dbDisconnect(conn = redshift_connection$con)
 }
