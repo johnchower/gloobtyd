@@ -35,3 +35,18 @@
 #'
 #' @format data.frame
 "test_data_cRF_NA"
+
+#' Data frame for testing the output of the calculate_sps function
+#'
+#' @format data.frame
+"comparison_test_data_perfect_prediction"
+
+#' Data frame for testing the output of the calculate_sps function
+#'
+#' @format data.frame
+"comparison_test_data_terrible_prediction"
+
+#' Data frame for testing the output of the calculate_sps function
+#'
+#' @format data.frame
+"comparison_test_data_random_prediction"
