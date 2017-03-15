@@ -50,3 +50,8 @@
 #'
 #' @format data.frame
 "comparison_test_data_random_prediction"
+
+#' Data frame for testing the output of the calculate_sps function
+#'
+#' @format data.frame
+"comparison_test_data_homogeneous"
