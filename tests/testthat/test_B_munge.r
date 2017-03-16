@@ -1,3 +1,4 @@
+cat("\nRunning test_B_munge.r\n")
 library(dplyr)
 csv_loc <- "~/Projects/gloobtyd/inst/exdata/sess_dur_data_full.csv"
 if (is.null(csv_loc)){

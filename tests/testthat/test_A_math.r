@@ -1,3 +1,4 @@
+cat("\nRunning test_A_math.r\n")
 library(numDeriv)
 
 test_that("Log likelihood function catches errors.", {
@@ -91,4 +92,19 @@ test_that("Derivative of regularization function was computed properly", {
   }
   expect_equal(object = error
                , expected = 0)
+})
+
+test_that("estimateReturnProbability returns answer.", {
+  testparams <- rep(1, times = 4)
+  testdata <- c(0, 1000, 0)
+  testtolerance <- 10 ^ (-5)
+  expect_equal(object = estimateReturnProbability(data = testdata
+                                                  , params = testparams)
+               , expected = 0
+               , tolerance = testtolerance)
+  testdata <- c(100000, 100000, 100000)
+  expect_equal(object = estimateReturnProbability(data = testdata
+                                                  , params = testparams)
+               , expected = 1
+               , tolerance = testtolerance)
 })

@@ -112,7 +112,7 @@ calculateRecencyFrequency <- function(sessDurData
                        , by = 7)
   dateSeq <- data.frame(active_week_start_date = dateSeq
                         , seq_number = (length(dateSeq) - 1):0)
-  recency_frequency_mini_test <- sessDurData %>%
+  sessDurData %>%
     inner_join(dateSeq, by = "active_week_start_date") %>%
     arrange(user_id, active_week_start_date) %>%
     group_by(user_id) %>%

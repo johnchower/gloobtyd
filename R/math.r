@@ -61,7 +61,7 @@ loglikelihood_d0 <- function(params, data){
                                 , data = data)
                  }
                  , x = params
-                 , side = c(1,1,1,1)
+                 ,  side = c(1, 1, 1, 1)
                  )
 }
 
@@ -115,4 +115,40 @@ regularization_d <- function(params
 #' @param lambda The regularization factor
 cost <- function(params, data, lambda = 0){
   regularization(params, lambda) - loglikelihood(params, data)
+}
+
+#' Derivative of cost function
+#'
+#' @param data An integer matrix where each row consists of the
+#' recency/frequency statistics for a single user, in the order (x, n, m)
+#' @param params A numeric vector of parameters for the log likelihood
+#' function. (alpha, beta, gamma, delta)
+#' @param lambda The regularization factor
+cost_d <- function(params, data, lambda = 0){
+  regularization_d(params, lambda) - loglikelihood_d(params, data)
+}
+
+#' Estimate the probability that a user will show up this week,
+#' given their recency/frequency statistics and model parameters alpha
+#' through gamma
+#'
+#' @param data An integer vector consisting of the recency/frequency statistics
+#' for a single user, in the order (x, n, m)
+#' @param params A numeric vector of parameters for the log likelihood
+#' function. (alpha, beta, gamma, delta)
+estimateReturnProbability <- function(params
+                                      , data){
+  Alpha_param <- params[1]
+  Beta_param <- params[2]
+  Gamma_param <- params[3]
+  Delta_param <- params[4]
+
+  x_data <- data[1]
+  n_data <- data[2]
+
+  beta(Alpha_param + x_data, Beta_param + n_data - x_data) *
+  beta(Gamma_param, Delta_param + n_data + 1) / (
+    beta(Alpha_param, Beta_param) * beta(Gamma_param, Delta_param) *
+    loglikelihood0(params = params, data = data)
+  )
 }
