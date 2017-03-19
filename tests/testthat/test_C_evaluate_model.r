@@ -67,7 +67,7 @@ test_that("calculateComparisonData returns results in correct form.", {
 
 test_that("calculate_sss throws errors correctly.", {
   expect_error(
-    calculate_sss(comparison_data = comparison_test_data_homogeneous)
+    calculate_sss(comparisonData = comparison_test_data_homogeneous)
     , regexp = 
       "Sensitivity and specificity are undefined when all users did the same thing."
   )
@@ -75,15 +75,15 @@ test_that("calculate_sss throws errors correctly.", {
 
 test_that("calculate_sss returns correct results.", {
   object_to_test <- 
-    calculate_sss(comparison_data = comparison_test_data_terrible_prediction)
+    calculate_sss(comparisonData = comparison_test_data_terrible_prediction)
   expect_equal(object = object_to_test
                , expected = -1)
   object_to_test <- 
-    calculate_sss(comparison_data = comparison_test_data_random_prediction)
+    calculate_sss(comparisonData = comparison_test_data_random_prediction)
   expect_equal(object = object_to_test
                , expected = 0)
   object_to_test <- 
-    calculate_sss(comparison_data = comparison_test_data_perfect_prediction)
+    calculate_sss(comparisonData = comparison_test_data_perfect_prediction)
   expect_equal(object = object_to_test
                , expected = 1)
   lt_neg1 <- c()
@@ -105,7 +105,7 @@ test_that("calculate_sss returns correct results.", {
                , showed_up = c(1, rep(0, times = nrow(comparison_test_data) - 1)) )
     }
     test_result <- calculate_sss(threshold = test_threshold
-                                 , comparison_data = comparison_test_data)
+                                 , comparisonData = comparison_test_data)
     new_gt_1 <- (test_result > 1)
     new_lt_neg1 <- (test_result < -1)
     gt_1 <- c(gt_1, new_gt_1)
