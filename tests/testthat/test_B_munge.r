@@ -88,6 +88,25 @@ test_that("calculateRecencyFrequency returns no NA or NULL values.", {
                , expected = 0)
 })
 
+csv_loc <- NULL
+if (is.null(csv_loc)){
+  glootility::connect_to_redshift()
+}
+user_first_champ <- getFirstChamp(userGroup = 1:10
+                                  , csvLoc = csv_loc)
+
+test_that("getFirstChamp returns results.", {
+  object_to_test <- user_first_champ
+  expect_is(object = object_to_test
+            , class = "data.frame")
+  expect_gt(object = nrow(object_to_test)
+            , expected = 0)
+  expected_colnames <- c("user_id", "first_champ")
+  colnames_to_test <- colnames(object_to_test)
+  expect_equal(object = colnames_to_test[order(colnames_to_test)]
+               , expected = expected_colnames[order(expected_colnames)])
+})
+
 if (is.null(csv_loc)){
   RPostgreSQL::dbDisconnect(conn = redshift_connection$con)
 }

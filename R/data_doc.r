@@ -9,6 +9,17 @@
 #' @format A length-one character vector.
 "query_session_duration_data_sub"
 
+#' A string containing the user_first_champ query.
+#' 
+#' @format A length-one character vector.
+"query_user_first_champ"
+
+#' A string containing the user_first_champ query, with placeholders to
+#' substitue userGroup and runDate queries.
+#' 
+#' @format A length-one character vector.
+"query_user_first_champ_sub"
+
 #' A string containing the user ids query.
 #' 
 #' @format A length-one character vector.
