@@ -2,7 +2,7 @@
 % Please edit documentation in R/math.r
 \name{estimateReturnProbability}
 \alias{estimateReturnProbability}
-\title{Estimate the probability that a user will show up this week,
+\title{Estimate the probability that a user is still alive,
 given their recency/frequency statistics and model parameters alpha
 through gamma}
 \usage{
@@ -16,7 +16,7 @@ function. (alpha, beta, gamma, delta)}
 for a single user, in the order (x, n, m)}
 }
 \description{
-Estimate the probability that a user will show up this week,
+Estimate the probability that a user is still alive,
 given their recency/frequency statistics and model parameters alpha
 through gamma
 }

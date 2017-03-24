@@ -65,11 +65,44 @@ test_that("calculateComparisonData returns results in correct form.", {
                , values_showed_up_expected)
 })
 
+test_that("calculateComparisonData returns results in correct form (wau)", {
+  object_to_test <- calculateComparisonData(sessDurData = test_sess_dur_data
+                                            , params = test_params
+                                            , cutoffDate = test_run_date
+                                            , problem = "wau")
+  expect_is(object = object_to_test
+            , class = "data.frame")
+  expect_gt(object = nrow(object_to_test)
+            , expected = 0)
+  colnames_to_test <- colnames(object_to_test)
+  expected_colnames <- c("user_id", "return_probability", "showed_up")
+  expect_equal(object = colnames_to_test[order(colnames_to_test)]
+               , expected = expected_colnames[order(expected_colnames)])
+  expect_is(object_to_test$user_id
+            , "integer")
+  user_ids_before <- unique(test_sess_dur_data$user_id)
+  user_ids_after <- unique(object_to_test$user_id)
+  expect_equal(object = user_ids_after[order(user_ids_after)]
+               , expected = user_ids_before[order(user_ids_before)] )
+  expect_is(object_to_test$return_probability
+            , "numeric")
+  expect_is(object_to_test$showed_up
+            , "numeric")
+  expect_equal(sum(object_to_test$return_probability < 0)
+               , 0)
+  expect_equal(sum(object_to_test$return_probability > 1)
+               , 0)
+  values_showed_up_to_test <- unique(object_to_test$showed_up) 
+  values_showed_up_expected <- c(0, 1)
+  expect_equal(values_showed_up_to_test[order(values_showed_up_to_test)]
+               , values_showed_up_expected)
+})
+
 test_that("calculate_sss throws errors correctly.", {
   expect_error(
     calculate_sss(comparisonData = comparison_test_data_homogeneous)
     , regexp = 
-      "Sensitivity and specificity are undefined when all users did the same thing."
+      "Sensitivity and specificity are undefined when all outcomes equal"
   )
 })
 

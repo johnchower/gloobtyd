@@ -94,7 +94,7 @@ test_that("Derivative of regularization function was computed properly", {
                , expected = 0)
 })
 
-test_that("estimateReturnProbability returns answer.", {
+test_that("estimateReturnProbability returns correct answer.", {
   testparams <- rep(1, times = 4)
   testdata <- c(0, 1000, 0)
   testtolerance <- 10 ^ (-5)
@@ -105,6 +105,29 @@ test_that("estimateReturnProbability returns answer.", {
   testdata <- c(100000, 100000, 100000)
   expect_equal(object = estimateReturnProbability(data = testdata
                                                   , params = testparams)
+               , expected = 1
+               , tolerance = testtolerance)
+})
+
+test_that("estimateExpectedTransactions returns correct answer.", {
+  N <- 20
+  num_weeks <- 2000
+  testparams <- rep(1, times = 4)
+  testdata <- c(0, num_weeks, 0)
+  testtolerance <- 10 ^ (-4)
+  expect_error(object = estimateExpectedTransactions(n_star = N
+                                                     , data = testdata
+                                                     , params = testparams)
+               , regexp = "Gamma_param cannot equal 1.")
+  testparams <- c(1, 1, 1.01, 1)
+  expect_equal(object = estimateExpectedTransactions(n_star = N, data = testdata
+                                                  , params = testparams)
+               , expected = 0
+               , tolerance = testtolerance)
+  testdata <- c(num_weeks, num_weeks, num_weeks)
+  testtolerance <- 10 ^ (-1)
+  expect_equal(object = estimateExpectedTransactions(n_star = N, data = testdata
+                                                  , params = testparams) / N
                , expected = 1
                , tolerance = testtolerance)
 })

@@ -5,7 +5,7 @@
 \title{Calculate the comparison data frame for a given session duration data set,
 for a given set of parameters, a session duration data set, and a run date.}
 \usage{
-calculateComparisonData(sessDurData, params, cutoffDate)
+calculateComparisonData(sessDurData, params, cutoffDate, problem = "churn")
 }
 \arguments{
 \item{sessDurData}{A data.frame of the form (user_id,
@@ -16,6 +16,11 @@ function. (alpha, beta, gamma, delta)}
 
 \item{cutoffDate}{A numeric date id in the form yyyymmdd. All data after this
 date will be dropped. Must fall on a Monday}
+
+\item{problem}{The classification problem to solve:
+"churn" : Predict whether users are "alive" or "dead" at the cutoff date
+(default)
+"wau" : Predict whether users will use Gloo next week}
 }
 \value{
 comparison_data A data.frame of the form (user_id,

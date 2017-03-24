@@ -128,7 +128,7 @@ cost_d <- function(params, data, lambda = 0){
   regularization_d(params, lambda) - loglikelihood_d(params, data)
 }
 
-#' Estimate the probability that a user will show up this week,
+#' Estimate the probability that a user is still alive,
 #' given their recency/frequency statistics and model parameters alpha
 #' through gamma
 #'
@@ -151,4 +151,41 @@ estimateReturnProbability <- function(params
     beta(Alpha_param, Beta_param) * beta(Gamma_param, Delta_param) *
     loglikelihood0(params = params, data = data)
   )
+}
+
+#' Estimate the expected number of active weeks that a user will have
+#' out of the next n weeks, given their recency/frequency statistics
+#' and model parameters alpha through gamma
+#'
+#' @param n_star The number of
+#' @param data An integer vector consisting of the recency/frequency statistics
+#' for a single user, in the order (x, n, m)
+#' @param params A numeric vector of parameters for the log likelihood
+#' function. (alpha, beta, gamma, delta)
+estimateExpectedTransactions <- function(n_star
+                                         , params
+                                         , data){
+  if(params[3] == 1){
+    stop("Gamma_param cannot equal 1.")
+  }
+  Alpha_param <- params[1]
+  Beta_param <- params[2]
+  Gamma_param <- params[3]
+  Delta_param <- params[4]
+
+  x_data <- data[1]
+  n_data <- data[2]
+
+  term1 <- loglikelihood0(params = params, data = data)
+  term2 <- beta(Alpha_param + x_data + 1, Beta_param + n_data - x_data)
+  term3 <- beta(Alpha_param, Beta_param)
+  term4 <- (Delta_param + n_data) / (Gamma_param - 1)
+  term5 <- beta(Gamma_param, Delta_param + n_data)
+  term6 <- (Delta_param + n_data + n_star) / (Gamma_param - 1)
+  term7 <- beta(Gamma_param, Delta_param + n_data + n_star)
+  term8 <- beta(Gamma_param, Delta_param)
+
+  (1 / term1) *
+  (term2 / term3) *
+  (term4 * term5 - term6 * term7) / term8
 }
