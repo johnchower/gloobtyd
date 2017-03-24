@@ -152,9 +152,7 @@ getFirstChamp <- function(userGroup = NULL
                             , statement = fetchQuery)
   } else {
     out <- csvLoc %>%
-      read.csv(stringsAsFactors = F) %>%
-      mutate(active_week_start_date = as.Date(active_week_start_date)) %>%
-      filter(active_week_start_date < runDate0)
+      read.csv(stringsAsFactors = F)
     if (!is.null(userGroup)){
       out <- dplyr::filter(out, user_id %in% userGroup) 
     } 
